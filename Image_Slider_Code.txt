@@ -1,0 +1,149 @@
+Image slider 
+
+//depandency
+ implementation 'com.github.smarteist:autoimageslider:1.4.0'
+
+//autoImageslider xml code
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#F8A3A3"
+    tools:context=".ProfileFragment">
+
+      <!-- TODO: Update blank fragment layout -->
+
+<com.smarteist.autoimageslider.SliderView
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:id="@+id/imageslider"
+    app:sliderScrollTimeInSec="2"
+    app:sliderAnimationDuration="500"
+    app:sliderAutoCycleDirection="back_and_forth"
+   app:sliderIndicatorRadius="4dp"
+    app:sliderIndicatorSelectedColor="@color/black"
+   app:sliderIndicatorUnselectedColor="#FAD2D2"
+    app:sliderStartAutoCycle="true"/>
+
+</RelativeLayout>
+
+
+//Single row desgine xml code
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/teal_200"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageview1"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"/>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="35dp"
+    android:background="@drawable/bg_over"
+    android:layout_alignParentBottom="true">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="naveen singh"
+        android:textSize="25dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:id="@+id/textdescription"
+        android:gravity="center"/>
+</RelativeLayout>
+
+</RelativeLayout>
+
+
+//MyAdapterCode
+
+public class SliderAdapter extends SliderViewAdapter<SliderAdapter.sliderviewHolder> {
+ private int[]images;
+ private String[]text;
+
+    public SliderAdapter(int[] images, String[] text) {
+        this.images = images;
+        this.text = text;
+    }
+
+    @Override
+    public sliderviewHolder onCreateViewHolder(ViewGroup parent) {
+
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.slide_item,parent,false);
+        return new sliderviewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(sliderviewHolder viewHolder, int position) {
+        viewHolder.imageview1.setImageResource(images[position]);
+        viewHolder.textdescription.setText(text[position]);
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+    }
+
+    @Override
+    public int getCount() {
+        return images.length;
+    }
+
+    public class sliderviewHolder extends SliderViewAdapter.ViewHolder{
+        ImageView imageview1;
+        TextView textdescription;
+
+        public sliderviewHolder(View itemView) {
+            super(itemView);
+            imageview1= itemView.findViewById(R.id.imageview1);
+            textdescription = itemView.findViewById(R.id.textdescription);
+        }
+    }
+    }
+
+//MainActivity UX Code  (this code i am use in fragment  if you want in simple mainActivity so your choice
+
+   // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+  private int [] images;
+  private String[] text;
+  private SliderAdapter adapter;
+  private SliderView imageslider;
+
+ @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+      View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        imageslider =view.findViewById(R.id.imageslider);
+        images = new int[]{R.drawable.profile,R.drawable.delet,R.drawable.run};
+        text = new String[]{"First image","Second Image","Third Image"};
+
+        adapter = new SliderAdapter(images,text);
+        imageslider.setSliderAdapter(adapter);
+        imageslider.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+        imageslider.setIndicatorAnimation(IndicatorAnimationType.DROP);
+        imageslider.startAutoCycle();
+
+       return view;
+    }
+
+
+}
+
+
